@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="State"
+    targetNamespace="http://code.sch.sick.com/TemsInfoConfiguration.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://code.sch.sick.com/TemsInfoConfiguration.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <xs:element name="TemsInfoConfiguration">
+    <xs:annotation></xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Credentials" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Credentials to elevate the user level to "AuthorizedClient" or "Service" (required for the "Set Site" message). If this is missing, the user level is "Operator".</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UserLevel" type="UserLevel">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en-us">User level to connect. Possible values: Operator [Default], AuthorizedClient, Service</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Password" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en-us">Password matching the "UserLevel". Default value: &lt;empty&gt;</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="HeartbeatMessageInterval" type="xs:float">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Specifies the time [s] between two "HeartbeatMessage"s. "0" means that no "HeartbeatMessage"s are sent. Default value: 0</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StatusMessageMode" type="StatusMessageMode">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">How "Status" messages should be triggered. Default value: Periodically</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StatusMessageInterval" type="xs:float">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">If the periodical sending of "Status" messages is enabled (see "StatusMessageMode") the next message is sent no later than this many seconds. Default value: 20</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MessageFilter" type="MessagesFilter" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Specifies which of the available messages should be sent to the client.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RecoveryBehavior" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">
+              Enables the recovery mechanism for the "Client Name" specified in the "Configuration" message. When the connection is lost and re-established (with the same "Client Name") the TEMS Info server sends all messages that couldn't be sent while the connection was lost.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MessageCount" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en-us">Maximal number of messages the TEMS Info server should buffer when the connection is lost. Default value: 300</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="MessageAge" type="xs:float" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en-us">Maximal age (seconds) of messages the TEMS Info server should buffer when the connection is lost. Default value: 300 seconds</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="MessageFilter" type="MessagesFilter" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en-us">Only messages that pass through this filter are placed in a buffer when the connection is lost. Default value: No message is buffered.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element>
+
+  <xs:complexType name="MessagesFilter">
+    <xs:sequence>
+      <xs:element name="VehicleMessages" minOccurs="0" maxOccurs="unbounded" type="AllowRoadVehicle">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Describes which of the "Vehicle" messages should be sent. Vehicle messages are only sent if at least one of these elements exist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ObjectStartMessages" minOccurs="0" maxOccurs="unbounded" type="AllowRoadDevice">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Describes which of the "Object Start" messages should be sent. Object Start messages are only sent if at least one of these elements exist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ObjectStopMessages" minOccurs="0" maxOccurs="unbounded" type="AllowRoadDevice">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Describes which of the "Object Stop" messages should be sent. Object Stop messages are only sent if at least one of these elements exist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ObjectLocationMessages" minOccurs="0" maxOccurs="unbounded" type="AllowRoadDevice">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Describes which of the "Object Location" messages should be sent. Object Location messages are only sent if at least one of these elements exist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ValueMessages" minOccurs="0" maxOccurs="unbounded" type="AllowRoadDeviceValue">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Describes which of the "Value" messages should be sent. Value messages are only sent if at least one of these elements exist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DataMessages" minOccurs="0" maxOccurs="unbounded" type="AllowRoadDeviceData">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Describes which of the "Data" messages should be sent. Data messages are only sent if at least one of these elements exist.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AllowRoad">
+    <xs:attribute name="RoadNo" type="xs:int" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en-us">Zero based number of the road (see Information message). If this attribute is missing, all roads are concerned.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="AllowRoadVehicle">
+    <xs:complexContent>
+      <xs:extension base="AllowRoad">
+        <xs:sequence>
+          <xs:element name="BinaryDataTypes" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en-us">Selects a binary data type that should be included in the Vehicle message. If this element is missing, no binary data is included.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:attribute name="BinaryDataType" type="BinaryDataType" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en-us">Selects a binary data type that should be included. If this attribute is missing, all binary data types are included.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="BinaryDataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VehicleXml">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">All available measurement values for the vehicle in an XML document.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Vehicle">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Proprietary format that contains all available measurement values and binary elements</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+        <xs:enumeration value="PointCloud">
+            <xs:annotation>
+                <xs:documentation xml:lang="en-us">Point cloud data used for client side viualization of the recorded vehicle.</xs:documentation>
+            </xs:annotation>
+        </xs:enumeration>
+        <xs:enumeration value="TimedPointCloud">
+            <xs:annotation>
+                <xs:documentation xml:lang="en-us">Timed point cloud data used for client side visualization or rearrangement of the recorded vehicle.</xs:documentation>
+            </xs:annotation>
+        </xs:enumeration>
+        <xs:enumeration value="Jpeg">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us"></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="AllowRoadDevice">
+    <xs:complexContent>
+      <xs:extension base="AllowRoad">
+        <xs:attribute name="DeviceNo" type="xs:int" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Zero based number of the device in the specified road (see Information message). If this attribute is missing, all devices on the road are concerned.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AllowRoadDeviceValue">
+    <xs:complexContent>
+      <xs:extension base="AllowRoadDevice">
+        <xs:attribute name="Name" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Only Value messages with the specificed name will be sent. If this attribute is missing, all Value message are sent.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AllowRoadDeviceData">
+    <xs:complexContent>
+      <xs:extension base="AllowRoadDevice">
+        <xs:attribute name="Name" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Data messages for the specificed name will be generated and sent to the client.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="StatusMessageMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">No "Status" messages are sent.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Periodically">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">The "Status" message is sent periodically (see "StatusMessageInterval").</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Change">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">The "Status" message is sent immediately after a change to the status.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Both">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">The "Status" message is sent periodically (see "StatusMessageInterval") and additionally immediately after a change to the status.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="UserLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Operator">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us"></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AuthorizedClient">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us"></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Service">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us"></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Developer">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us"></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Internal">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us"></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

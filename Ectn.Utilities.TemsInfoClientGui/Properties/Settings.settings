@@ -1,0 +1,44 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Ectn.Utilities.TemsInfoClientGui.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MainWindowWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">800</Value>
+    </Setting>
+    <Setting Name="MainWindowHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">600</Value>
+    </Setting>
+    <Setting Name="ConnectionAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="ConnectionPort" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">54345</Value>
+    </Setting>
+    <Setting Name="ConnectionId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Reference Client</Value>
+    </Setting>
+    <Setting Name="ConnectionConfiguration" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TemsInfoConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://code.sch.sick.com/TemsInfoConfiguration.xsd"&gt;
+    &lt;HeartbeatMessageInterval&gt;1&lt;/HeartbeatMessageInterval&gt;
+    &lt;StatusMessageMode&gt;Both&lt;/StatusMessageMode&gt;
+    &lt;StatusMessageInterval&gt;60&lt;/StatusMessageInterval&gt;
+    &lt;MessageFilter&gt;
+        &lt;VehicleMessages&gt;
+            &lt;BinaryDataTypes /&gt;
+        &lt;/VehicleMessages&gt;
+        &lt;ObjectStartMessages /&gt;
+        &lt;ObjectStopMessages /&gt;
+        &lt;ObjectLocationMessages /&gt;
+        &lt;ValueMessages /&gt;
+    &lt;/MessageFilter&gt;
+&lt;/TemsInfoConfiguration&gt;</Value>
+    </Setting>
+    <Setting Name="MainWindowLeft" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="MainWindowTop" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

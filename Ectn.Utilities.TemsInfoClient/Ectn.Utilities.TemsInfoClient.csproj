@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F90D0DC2-6FF0-4EDB-9371-088E469E4BD6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ectn.Utilities.TemsInfo</RootNamespace>
+    <AssemblyName>Ectn.Utilities.TemsInfoClient</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\TemsInfoTimedBinary3D.cs" />
+    <Compile Include="Classes\TemsInfoCredentials.cs" />
+    <Compile Include="Enumerations\TemsInfoDataType.cs" />
+    <Compile Include="Enumerations\TemsInfoHealthState.cs" />
+    <Compile Include="Enumerations\TemsInfoUserLevel.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgHeartbeat.cs" />
+    <Compile Include="Messages\DataMessage.cs" />
+    <Compile Include="Messages\HeartbeatMessage.cs" />
+    <Compile Include="Messages\ValueMessage.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TemsInfoClient.cs" />
+    <Compile Include="Classes\TemsInfoBinary3D.cs" />
+    <Compile Include="ByteArrayHelper.cs" />
+    <Compile Include="ClientConfiguration.cs" />
+    <Compile Include="Classes\TemsInfoMessageFilter.cs" />
+    <Compile Include="Classes\TemsInfoRecoveryBehaviour.cs" />
+    <Compile Include="Enumerations\TemsInfoStatusMessageMode.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgSetSite.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgData.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgValue.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgError.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgObjectLocation.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgObjectStart.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgStatus.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgObjectStop.cs" />
+    <Compile Include="Enumerations\TemsInfoBinaryDataType.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgConfiguration.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgInformation.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgVehicle.cs" />
+    <Compile Include="Enumerations\TemsInfoErrorCode.cs" />
+    <Compile Include="Enumerations\TemsInfoLocationAccuracy.cs" />
+    <Compile Include="Enumerations\TemsInfoMessageType.cs" />
+    <Compile Include="Enumerations\TemsInfoMovingDirection.cs" />
+    <Compile Include="Enumerations\TemsInfoTriggerResult.cs" />
+    <Compile Include="Enumerations\TemsInfoVehicleDirection.cs" />
+    <Compile Include="Message Structs\TemsInfoHeader.cs" />
+    <Compile Include="Message Structs\TemsInfoMsgInitialization.cs" />
+    <Compile Include="Messages\AbstractMessage.cs" />
+    <Compile Include="Messages\ErrorMessage.cs" />
+    <Compile Include="Messages\InformationMessage.cs" />
+    <Compile Include="Messages\ObjectLocationMessage.cs" />
+    <Compile Include="Messages\ObjectStartMessage.cs" />
+    <Compile Include="Messages\ObjectStopMessage.cs" />
+    <Compile Include="Messages\StatusMessage.cs" />
+    <Compile Include="Messages\VehicleMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
+    <Compile Include="TemsInfoVersion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schemas\TemsInfoConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

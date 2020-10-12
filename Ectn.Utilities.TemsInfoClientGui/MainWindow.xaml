@@ -1,0 +1,358 @@
+﻿<Window x:Class="Ectn.Utilities.TemsInfoClientGui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:local="clr-namespace:Ectn.Utilities.TemsInfoClientGui"
+        xmlns:localProps="clr-namespace:Ectn.Utilities.TemsInfoClientGui.Properties"
+        x:Name="this"
+        Title="TEMS Info Reference Client"
+        Top="{Binding MainWindowTop, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}" 
+        Left="{Binding MainWindowLeft, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}" 
+        Height="{Binding MainWindowHeight, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}" 
+        Width="{Binding MainWindowWidth, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}" 
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        Closed="Window_Closed"
+        FocusManager.FocusedElement="{Binding ElementName=txtConnectionAddress}">
+
+    <Window.Resources>
+        <Style x:Key="SettingsLabelStyle" TargetType="Label" />
+        <Style x:Key="SettingsTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="0 2" />
+        </Style>
+        <Style x:Key="GeneralButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="75" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Padding" Value="1" />
+        </Style>
+
+        <Style x:Key="DocumentImageStyle" TargetType="Image">
+            <Setter Property="Source" Value="/Resources/XML_Document.png" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Document}" Value="{x:Null}">
+                    <Setter Property="Source" Value="/Resources/XML_Document_NoContent.png" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate DataType="{x:Type local:MessageInfo}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Text="{Binding Path=Timestamp, StringFormat='{}{0:d} {0:HH:mm:ss.fff}', ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
+                    Grid.Column="0"
+                    Margin="5,0,5,0" />
+                <ItemsControl
+                    ItemsSource="{Binding Path=Values}"
+                    Grid.Column="1">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <ItemsControl
+                    ItemsSource="{Binding Path=Documents}"
+                    Grid.Column="2">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel
+                                IsItemsHost="True"
+                                Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:MessageInfoValue}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="MessageInfoValue_Name" />
+                    <ColumnDefinition Width="auto" SharedSizeGroup="MessageInfoValue_Value" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Text="{Binding Path=Name}"
+                    Grid.Column="0"
+                    Margin="5, 0" />
+                <TextBlock
+                    Text="{Binding Path=Value}"
+                    Grid.Column="1"
+                    Margin="5, 0" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:DocumentInfo}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Image
+                    Style="{StaticResource ResourceKey=DocumentImageStyle}"
+                    Grid.Row="0"
+                    Margin="5" />
+                <TextBlock
+                    Text="{Binding Path=Title}"
+                    Grid.Row="1"
+                    Margin="5, 0, 5, 0"
+                    TextWrapping="Wrap"
+                    FontSize="10" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Expander Padding="4"
+            x:Name="expSettings"
+            Header="Connection Settings"
+            DockPanel.Dock="Top"
+            IsExpanded="True">
+
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Content="IP Address"
+                    Grid.Row="0" Grid.Column="0"
+                    Style="{StaticResource ResourceKey=SettingsLabelStyle}" />
+                <TextBox
+                    x:Name="txtConnectionAddress"
+                    Grid.Row="0" Grid.Column="1"
+                    Text="{Binding ConnectionAddress, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}"
+                    Style="{StaticResource ResourceKey=SettingsTextBoxStyle}" />
+                <Label
+                    Content="Port"
+                    Grid.Row="1" Grid.Column="0"
+                    Style="{StaticResource ResourceKey=SettingsLabelStyle}" />
+                <TextBox
+                    x:Name="txtConnectionPort"
+                    Text="{Binding ConnectionPort, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}"
+                    Grid.Row="1" Grid.Column="1"
+                    Style="{StaticResource ResourceKey=SettingsTextBoxStyle}" />
+                <Label
+                    Content="Client Identifier"
+                    Grid.Row="2" Grid.Column="0"
+                    Style="{StaticResource ResourceKey=SettingsLabelStyle}" />
+                <TextBox
+                    x:Name="txtConnectionId"
+                    Text="{Binding ConnectionId, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}"
+                    Grid.Row="2" Grid.Column="1"
+                    Style="{StaticResource ResourceKey=SettingsTextBoxStyle}" />
+                <Button
+                    x:Name="btnConnect" Content="Connect"
+                    Click="btnConnect_Click"
+                    Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource GeneralButtonStyle}">
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsConnected, ElementName=this}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button
+                    x:Name="btnDisconnect" Content="Disconnect"
+                    Click="btnDisconnect_Click"
+                    Grid.Row="2" Grid.Column="2">
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource GeneralButtonStyle}">
+                            <Setter Property="IsEnabled" Value="False" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsConnected, ElementName=this}" Value="true">
+                                    <Setter Property="IsEnabled" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label
+                    Content="Send .temsXml-File"
+                    Grid.Row="0" Grid.Column="4"
+                    Style="{StaticResource ResourceKey=SettingsLabelStyle}" />
+                <Button
+                    x:Name="btnSetSite" Content="Set Site"
+                    Click="btnSetSite_Click"
+                    Grid.Row="0" Grid.Column="5"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource GeneralButtonStyle}">
+                            <Setter Property="IsEnabled" Value="False" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsOnline, ElementName=this}" Value="true">
+                                    <Setter Property="IsEnabled" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button
+                    x:Name="btnResetSite" Content="Reset Site"
+                    Click="btnResetSite_Click"
+                    Grid.Row="0" Grid.Column="6"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource GeneralButtonStyle}">
+                            <Setter Property="IsEnabled" Value="False" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsOnline, ElementName=this}" Value="true">
+                                    <Setter Property="IsEnabled" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label
+                    Content="Clear Communication Log"
+                    Grid.Row="1" Grid.Column="4"
+                    Style="{StaticResource ResourceKey=SettingsLabelStyle}" />
+                <Button
+                    x:Name="btnClearMessages" Content="Clear"
+                    Grid.Row="1" Grid.Column="5"
+                    Style="{StaticResource ResourceKey=GeneralButtonStyle}"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnClearMessages_Click" />
+
+                <Label
+                    Content="Clear Debug Log"
+                    Grid.Row="2" Grid.Column="4"
+                    Style="{StaticResource ResourceKey=SettingsLabelStyle}" />
+                <Button
+                    x:Name="btnClearLog" Content="Clear"
+                    Grid.Row="2" Grid.Column="5"
+                    Style="{StaticResource ResourceKey=GeneralButtonStyle}"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnClearLog_Click" />
+            </Grid>
+        </Expander>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <TextBlock x:Name="txtConnectionState" />
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock />
+            </StatusBarItem>
+            <Separator Grid.Column="3" />
+            <StatusBarItem Grid.Column="4">
+                <TextBlock x:Name="txtHeartbeat" />
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl>
+            <TabItem Header="Communication">
+                <ListBox
+                    ItemsSource="{Binding ElementName=this, Path=ReceivedMessages}"
+                    HorizontalContentAlignment="Stretch"
+                    Grid.IsSharedSizeScope="True"
+                    local:ScrollHelper.AutoScroll="True"
+                    MouseDoubleClick="lstCommunication_MouseDoubleClick">
+
+                    <ListBox.Template>
+                        <ControlTemplate>
+                            <ScrollViewer
+                                CanContentScroll="True"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </TabItem>
+            <TabItem Header="Configuration">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox
+                        x:Name="txtConfiguration"
+                        Grid.Row="0" Grid.Column="0"
+                        AcceptsReturn="True"
+                        FontFamily="Courier New"
+                        Text="{Binding ConnectionConfiguration, Source={x:Static localProps:Settings.Default}, Mode=TwoWay}"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AcceptsTab="True" PreviewKeyDown="txtConfiguration_PreviewKeyDown" />
+                    <StackPanel
+                        Grid.Row="1" Grid.Column="0"
+                        Orientation="Horizontal" HorizontalAlignment="Right">
+
+                        <Button
+                            x:Name="btnConfigurationLoad" Content="Load"
+                            Style="{StaticResource ResourceKey=GeneralButtonStyle}"
+                            Click="btnConfigurationLoad_Click" />
+                        <Button
+                            x:Name="btnConfigurationSave" Content="Save"
+                            Style="{StaticResource ResourceKey=GeneralButtonStyle}"
+                            Click="btnConfigurationSave_Click" />
+                        <Button
+                            x:Name="btnConfigurationReset" Content="Reset"
+                            Style="{StaticResource ResourceKey=GeneralButtonStyle}"
+                            Click="btnConfigurationReset_Click" />
+
+                        <Border Width="8" />
+
+                        <Button
+                            x:Name="btnConfigurationUpdate" Content="Update"
+                            IsEnabled="{Binding ElementName=this, Path=IsOnline}"
+                            Style="{StaticResource ResourceKey=GeneralButtonStyle}"
+                            Click="btnConfigurationUpdate_Click" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Log">
+                <local:LogControl x:Name="ctrlLog" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
