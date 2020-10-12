@@ -69,7 +69,6 @@ namespace Ectn.Utilities.TemsInfoClientGui {
             ReceivedMessages = new ObservableCollection<MessageInfo>();
 
             InitializeComponent();
-
         }
 
         #region Component Events
